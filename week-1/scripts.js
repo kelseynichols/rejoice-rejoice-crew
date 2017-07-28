@@ -8,7 +8,6 @@ $(document).ready(() => {
   function checkQueue() {
     if(actions.length && isRunning === false) {
       let id = actions.shift()
-      console.log(id)
       grow(id)
     }
   }
