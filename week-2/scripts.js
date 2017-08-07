@@ -7,72 +7,76 @@ function goDOM () {
   let squareArray = []
 
   function insertSquare () {
+    // create square, push in array, append to page
     let square = document.createElement('div')
-    square.className = 'square'
     square.id = squareArray.length + 1
     square.innerHTML = square.id
-    document.body.appendChild(square)
     squareArray.push(square)
+    document.body.appendChild(square)
 
-    square.addEventListener('mouseover', showNumber)
-    square.addEventListener('mouseout', hideNumber)
-    square.addEventListener('click', changeBackgroundColor)
-    square.addEventListener('dblclick', removeSquare)
-
-    function showNumber () {
+    // show id
+    square.addEventListener('mouseover', () => {
       square.style.color = 'white'
-    }
+    })
 
-    function hideNumber () {
+    // hide id
+    square.addEventListener('mouseout', () => {
       square.style.color = 'transparent'
-    }
+    })
 
-    function changeBackgroundColor () {
+    // change background color
+    square.addEventListener('click', () => {
       let letters = '0123456789ABCDEF'
       let color = '#'
       for (let i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)]
       }
       square.style.backgroundColor = color
+    })
+
+    // remove square
+    square.addEventListener('dblclick', removeSquare)
+
+    function removeSquare (e) {
+      let clickedSquare = e.target
+      // even?
+      if (clickedSquare.innerHTML % 2 === 0) {
+        // unless nothing is there
+        if (clickedSquare.nextElementSibling === null) {
+          window.alert('nope')
+          return
+        }
+        // remove square from DOM
+        clickedSquare.nextElementSibling.remove()
+
+        // remove square from array
+        let arrayIndex = squareArray.indexOf(clickedSquare)
+        squareArray.splice(arrayIndex, 1)
+
+        // renumber remaining squares
+        reNumber()
+      } else {
+        if (clickedSquare.previousElementSibling === btn) {
+          window.alert('nope')
+          return
+        }
+        clickedSquare.previousElementSibling.remove()
+        let arrayIndex = squareArray.indexOf(clickedSquare)
+        squareArray.splice(arrayIndex - 1, 1)
+        reNumber()
+      }
     }
 
     function reNumber () {
       let counter = 0
-
-      squareArray.forEach(x => {
-        let squarez = document.getElementById(`${x.id}`)
-
+      // loop through array of squares that are left on page, count them, assign them to innerHTML
+      squareArray.forEach(square => {
+        let remainingSquare = document.getElementById(`${square.id}`)
         counter++
-        if (squarez) {
-          squarez.innerHTML = counter
+        if (remainingSquare) {
+          remainingSquare.innerHTML = counter
         }
       })
-    }
-
-    function removeSquare (e) {
-      let thisSquare = e.target
-      let squareNumber = thisSquare.innerHTML
-      if (squareNumber % 2 === 0) {
-        // if (thisSquare.nextElementSibling === null) {
-        //   window.alert("there's nothing to remove!")
-        //   return
-        // }
-        thisSquare.nextElementSibling.remove()
-        let arrayIndex = squareArray.indexOf(thisSquare)
-        squareArray.splice(arrayIndex, 1)
-        reNumber()
-
-        // squareArray.shift()
-        // this.squareArray
-        // console.log(squareArray.length)
-        // thisSquare.id = arrayIndex
-      } else {
-        if (thisSquare.previousElementSibling === btn) {
-          window.alert("can't remove the button!")
-          return
-        }
-        thisSquare.previousElementSibling.remove()
-      }
     }
   }
 }
