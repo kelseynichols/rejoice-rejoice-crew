@@ -1,0 +1,22 @@
+
+#board1 {
+  height: 200px;
+  width: 200px;
+  background-color: gray;
+  position: relative;
+  margin-right: 20px;
+}
+
+
+.square {
+  height: 40px;
+  width: 40px;
+  background-color: lightblue;
+  border: 1px solid black;
+  position: absolute;
+}
+
+button {
+  display: inline-block;
+  margin-bottom: 20px;
+}
